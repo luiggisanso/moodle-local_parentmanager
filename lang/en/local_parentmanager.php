@@ -63,6 +63,6 @@ $string['deleted_count'] = '{$a} link(s) removed.';
 $string['back_to_list'] = 'Back to list';
 
 $string['csv_instructions'] = '<div class="alert alert-info">CSV Format: 2 columns (Parent Email ; Child Email).</div>';
-
 $string['privacy:metadata'] = 'Role management plugin.';
 
+$string['parentmanager:manage'] = 'Manage Parents/Childs Relationships';
