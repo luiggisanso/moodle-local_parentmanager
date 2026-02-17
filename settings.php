@@ -24,12 +24,19 @@
  * @copyright   2026 E-learning Touch' <contact@elearningtouch.com> (Maintainer)
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die();
 
-if ($hassiteconfig) {
-    $ADMIN->add('accounts', new admin_category('local_parentmanager_cat', get_string('pluginname', 'local_parentmanager')));
+$canmanage = has_capability('local/parentmanager:manage', context_system::instance());
 
-    // 1. CSV Import
+if ($hassiteconfig || $canmanage) {
+    
+    // On crée la catégorie
+    $ADMIN->add('accounts', new admin_category(
+        'local_parentmanager_cat', 
+        get_string('pluginname', 'local_parentmanager')
+    ));
+
+    // 1. Import CSV
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_csv',
         get_string('import_nav', 'local_parentmanager'),
@@ -37,7 +44,7 @@ if ($hassiteconfig) {
         'local/parentmanager:manage'
     ));
 
-    // 2. Manual (Individual)
+    // 2. Manuel (Individuel)
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_manual',
         get_string('manual_nav', 'local_parentmanager'),
@@ -45,7 +52,7 @@ if ($hassiteconfig) {
         'local/parentmanager:manage'
     ));
 
-    // 3. Cohort
+    // 3. Cohorte (Massif)
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_cohort',
         get_string('cohort_nav', 'local_parentmanager'),
