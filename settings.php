@@ -30,13 +30,11 @@ $canmanage = has_capability('local/parentmanager:manage', context_system::instan
 
 if ($hassiteconfig || $canmanage) {
     
-    // On crée la catégorie
     $ADMIN->add('accounts', new admin_category(
         'local_parentmanager_cat', 
         get_string('pluginname', 'local_parentmanager')
     ));
 
-    // 1. Import CSV
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_csv',
         get_string('import_nav', 'local_parentmanager'),
@@ -44,7 +42,6 @@ if ($hassiteconfig || $canmanage) {
         'local/parentmanager:manage'
     ));
 
-    // 2. Manuel (Individuel)
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_manual',
         get_string('manual_nav', 'local_parentmanager'),
@@ -52,7 +49,6 @@ if ($hassiteconfig || $canmanage) {
         'local/parentmanager:manage'
     ));
 
-    // 3. Cohorte (Massif)
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_cohort',
         get_string('cohort_nav', 'local_parentmanager'),
@@ -60,7 +56,6 @@ if ($hassiteconfig || $canmanage) {
         'local/parentmanager:manage'
     ));
 
-    // 4. Gestion
     $ADMIN->add('local_parentmanager_cat', new admin_externalpage(
         'local_parentmanager_manage',
         get_string('manage_nav', 'local_parentmanager'),
