@@ -65,3 +65,4 @@ $string['back_to_list'] = 'Retour à la liste';
 $string['csv_instructions'] = '<div class="alert alert-info">Format CSV : 2 colonnes (Email Parent ; Email Enfant).</div>';
 $string['privacy:metadata'] = 'Plugin de gestion de rôles.';
 
+$string['parentmanager:manage'] = 'Gérer les relations Parents/Enfants';
