@@ -1,5 +1,9 @@
 # Moodle Parent/Child Manager (local_parentmanager)
 
+![Moodle Version](https://img.shields.io/badge/Moodle-4.5%2B-orange)
+![License](https://img.shields.io/badge/license-GPLv3-blue)
+![Status](https://img.shields.io/badge/status-Stable-green)
+
 [English](#english) | [Français](#français)
 
 ---
@@ -86,4 +90,5 @@ Accédez au plugin via : **Administration du site > Comptes > Gestionnaire Paren
 1.  **Importer par CSV :** Chargez un fichier au format `parent@email.com;enfant@email.com`. Les en-têtes sont ignorés.
 2.  **Association Manuelle :** Recherchez un parent, puis recherchez les élèves à lier.
 3.  **Association par Cohorte :** Choisissez un parent, puis choisissez une cohorte pour lier tous ses membres.
+
 4.  **Gestion des Parents :** Consultez la liste des parents actifs. Cliquez sur un parent pour voir ou supprimer des enfants spécifiques.
