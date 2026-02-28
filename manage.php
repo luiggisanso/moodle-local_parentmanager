@@ -42,11 +42,7 @@ $PAGE->set_heading(get_string('manage_header', 'local_parentmanager'));
 echo $OUTPUT->header();
 
 $allroles = role_get_names(null, ROLENAME_ORIGINAL);
-
-$sql = "SELECT r.id 
-        FROM {role} r
-        JOIN {role_context_levels} rcl ON r.id = rcl.roleid
-        WHERE rcl.contextlevel = :ctx";
+$sql = "SELECT r.id FROM {role} r JOIN {role_context_levels} rcl ON r.id = rcl.roleid WHERE rcl.contextlevel = :ctx";
 $valid_ids = $DB->get_fieldset_sql($sql, ['ctx' => CONTEXT_USER]);
 
 $roles = [];
@@ -56,23 +52,20 @@ foreach ($allroles as $r) {
     }
 }
 
-if (!$roleid) {
+if (!$roleid && !empty($roles)) {
     foreach ($roles as $rid => $rname) {
         if (stripos($rname, 'parent') !== false) {
-            $roleid = $rid; 
-            break;
+            $roleid = $rid; break;
         }
     }
-    if (!$roleid && !empty($roles)) {
-        $roleid = array_key_first($roles);
-    }
+    if (!$roleid) $roleid = array_key_first($roles);
 }
 
 if (!empty($roles)) {
     echo $OUTPUT->single_select($baseurl, 'roleid', $roles, $roleid, null, 'switchrole');
     echo "<hr>";
 } else {
-    echo $OUTPUT->notification(get_string('no_children', 'local_parentmanager'), 'error');
+    echo $OUTPUT->notification(get_string('no_user_context_role', 'local_parentmanager'), 'error');
     echo $OUTPUT->footer();
     die();
 }
@@ -99,27 +92,25 @@ if ($parentid) {
     if (empty($children)) {
         echo "<p>" . get_string('no_children', 'local_parentmanager') . "</p>";
     } else {
-        echo '<form method="post" action="manage.php">';
-        echo '<input type="hidden" name="sesskey" value="' . sesskey() . '">';
-        echo '<input type="hidden" name="roleid" value="' . $roleid . '">';
-        echo '<input type="hidden" name="parentid" value="' . $parentid . '">';
-        echo '<input type="hidden" name="action" value="delete">';
-
-        $table = new html_table();
-        $table->head = ['<input type="checkbox" id="selectall">', 'Nom', 'Email'];
+        $templatedata = [
+            'sesskey' => sesskey(),
+            'roleid' => $roleid,
+            'parentid' => $parentid,
+            'delete_selected_str' => get_string('delete_selected', 'local_parentmanager'),
+            'back_to_list_str' => get_string('back_to_list', 'local_parentmanager'),
+            'children' => []
+        ];
+        
         foreach ($children as $child) {
-            $link = html_writer::link(new moodle_url('/user/profile.php', ['id' => $child->id]), fullname($child));
-            $table->data[] = [
-                '<input type="checkbox" name="children[]" value="' . $child->id . '">',
-                $link,
-                $child->email
+            $templatedata['children'][] = [
+                'id' => $child->id,
+                'fullname' => fullname($child),
+                'email' => $child->email,
+                'profileurl' => new moodle_url('/user/profile.php', ['id' => $child->id])->out(false)
             ];
         }
-        echo html_writer::table($table);
-        echo '<br><button type="submit" class="btn btn-danger">' . get_string('delete_selected', 'local_parentmanager') . '</button>';
-        echo ' <a href="manage.php?roleid='.$roleid.'" class="btn btn-secondary">' . get_string('back_to_list', 'local_parentmanager') . '</a>';
-        echo '</form>';
-        echo '<script>document.getElementById("selectall").addEventListener("change", function() { var c = document.querySelectorAll("input[name=\'children[]\']"); for(var i of c) i.checked = this.checked; });</script>';
+        
+        echo $OUTPUT->render_from_template('local_parentmanager/manage_children_form', $templatedata);
     }
     echo $OUTPUT->box_end();
 
@@ -130,20 +121,26 @@ if ($parentid) {
     if (empty($parents)) {
         echo $OUTPUT->notification(get_string('no_parents_found', 'local_parentmanager'), 'info');
     } else {
-        $table = new html_table();
-        $table->head = ['Nom du Parent', 'Email', 'Enfants', 'Action'];
+        $templatedata = [
+            'parent_name_str' => get_string('col_left', 'local_parentmanager'),
+            'children_str' => get_string('col_right_manual', 'local_parentmanager'),
+            'action_str' => get_string('action_label', 'local_parentmanager'),
+            'manage_str' => get_string('manage_children', 'local_parentmanager'),
+            'parents' => []
+        ];
+        
         foreach ($parents as $p) {
             $children = \local_parentmanager\helper::get_children_of_parent($p->id, $roleid);
-            $count = count($children);
             $manage_url = new moodle_url('/local/parentmanager/manage.php', ['parentid' => $p->id, 'roleid' => $roleid]);
-            $table->data[] = [
-                html_writer::link($manage_url, fullname($p)),
-                $p->email,
-                "<span class='badge badge-info'>$count</span>",
-                html_writer::link($manage_url, get_string('manage_children', 'local_parentmanager'), ['class' => 'btn btn-sm btn-primary'])
+            $templatedata['parents'][] = [
+                'fullname' => fullname($p),
+                'email' => $p->email,
+                'count' => count($children),
+                'manageurl' => $manage_url->out(false)
             ];
         }
-        echo html_writer::table($table);
+        
+        echo $OUTPUT->render_from_template('local_parentmanager/manage_parents_list', $templatedata);
     }
 }
 echo $OUTPUT->footer();
