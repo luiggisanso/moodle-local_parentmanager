@@ -66,3 +66,15 @@ $string['csv_instructions'] = '<div class="alert alert-info">CSV Format: 2 colum
 $string['privacy:metadata'] = 'Role management plugin.';
 
 $string['parentmanager:manage'] = 'Manage Parents/Childs Relationships';
+
+// New strings to remove hardcoded text in PHP
+$string['parent_label'] = 'Parent: {$a}';
+$string['error_id'] = 'Error ID {$a->id}: {$a->msg}';
+$string['error_generic'] = 'Error: {$a}';
+$string['users_added'] = '{$a} user(s) added.';
+$string['empty_cohort'] = 'This cohort is empty.';
+$string['no_user_context_role'] = 'No "User Context" role found. Please configure a Parent role in site administration.';
+$string['import_ok'] = 'OK: <strong>{$a->parent}</strong> -> <strong>{$a->child}</strong>';
+$string['import_err'] = 'Err: {$a->email} - {$a->msg}';
+$string['import_not_found'] = 'Not found: {$a->p_email} or {$a->c_email}';
+$string['action_label'] = 'Action';
