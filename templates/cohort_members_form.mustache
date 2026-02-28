@@ -1,0 +1,40 @@
+<p>{{{assign_to_parent_str}}}</p>
+
+<form method="post" action="cohort.php">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="action" value="assign">
+    <input type="hidden" name="parentid" value="{{parentid}}">
+    <input type="hidden" name="roleid" value="{{roleid}}">
+
+    <table class="generaltable w-100">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 50px;"><input type="checkbox" id="selectall"></th>
+                <th scope="col">{{#str}} fullname {{/str}}</th>
+                <th scope="col">{{#str}} email {{/str}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#members}}
+            <tr>
+                <td><input type="checkbox" name="selected_users[]" value="{{id}}"></td>
+                <td>{{fullname}}</td>
+                <td>{{email}}</td>
+            </tr>
+            {{/members}}
+        </tbody>
+    </table>
+    
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">{{assign_selected_str}}</button>
+        <a href="cohort.php" class="btn btn-secondary">{{cancel_str}}</a>
+    </div>
+</form>
+
+{{#js}}
+require(['jquery'], function($) {
+    $('#selectall').on('change', function() {
+        $("input[name='selected_users[]']").prop('checked', this.checked);
+    });
+});
+{{/js}}
