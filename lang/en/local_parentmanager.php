@@ -67,7 +67,6 @@ $string['privacy:metadata'] = 'Role management plugin.';
 
 $string['parentmanager:manage'] = 'Manage Parents/Childs Relationships';
 
-// New strings to remove hardcoded text in PHP
 $string['parent_label'] = 'Parent: {$a}';
 $string['error_id'] = 'Error ID {$a->id}: {$a->msg}';
 $string['error_generic'] = 'Error: {$a}';
@@ -78,3 +77,6 @@ $string['import_ok'] = 'OK: <strong>{$a->parent}</strong> -> <strong>{$a->child}
 $string['import_err'] = 'Err: {$a->email} - {$a->msg}';
 $string['import_not_found'] = 'Not found: {$a->p_email} or {$a->c_email}';
 $string['action_label'] = 'Action';
+
+$string['search_parent'] = 'Search for a parent...';
+$string['search_children'] = 'Search for students...';
