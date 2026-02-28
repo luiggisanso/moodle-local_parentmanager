@@ -1,0 +1,38 @@
+<form method="post" action="manage.php">
+    <input type="hidden" name="sesskey" value="{{sesskey}}">
+    <input type="hidden" name="roleid" value="{{roleid}}">
+    <input type="hidden" name="parentid" value="{{parentid}}">
+    <input type="hidden" name="action" value="delete">
+
+    <table class="generaltable w-100">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 50px;"><input type="checkbox" id="selectall"></th>
+                <th scope="col">{{#str}} fullname {{/str}}</th>
+                <th scope="col">{{#str}} email {{/str}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#children}}
+            <tr>
+                <td><input type="checkbox" name="children[]" value="{{id}}"></td>
+                <td><a href="{{profileurl}}">{{fullname}}</a></td>
+                <td>{{email}}</td>
+            </tr>
+            {{/children}}
+        </tbody>
+    </table>
+    
+    <div class="mt-3">
+        <button type="submit" class="btn btn-danger">{{delete_selected_str}}</button>
+        <a href="manage.php?roleid={{roleid}}" class="btn btn-secondary">{{back_to_list_str}}</a>
+    </div>
+</form>
+
+{{#js}}
+require(['jquery'], function($) {
+    $('#selectall').on('change', function() {
+        $("input[name='children[]']").prop('checked', this.checked);
+    });
+});
+{{/js}}
