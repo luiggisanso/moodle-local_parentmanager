@@ -1,0 +1,10 @@
+{{#title}}
+<h4 class="mt-3"><strong>{{{title}}}</strong></h4>
+{{/title}}
+<ul>
+    {{#results}}
+        <li class="{{#is_success}}text-success{{/is_success}}{{#is_error}}text-danger{{/is_error}}{{#is_warning}}text-warning{{/is_warning}}">
+            {{{message}}}
+        </li>
+    {{/results}}
+</ul>
