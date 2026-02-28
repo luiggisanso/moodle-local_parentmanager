@@ -37,7 +37,6 @@ $PAGE->set_heading(get_string('cohort_nav', 'local_parentmanager'));
 
 echo $OUTPUT->header();
 
-// 1. Relation
 $action = optional_param('action', '', PARAM_ALPHA);
 
 if ($action === 'assign' && data_submitted() && confirm_sesskey()) {
@@ -50,22 +49,38 @@ if ($action === 'assign' && data_submitted() && confirm_sesskey()) {
         
         echo $OUTPUT->heading(get_string('processing', 'local_parentmanager'), 3);
         echo $OUTPUT->box_start();
-        echo "<p><strong>Parent :</strong> " . fullname($parent) . "</p><ul>";
+        
+        $templatedata = [
+            'title' => get_string('parent_label', 'local_parentmanager', fullname($parent)),
+            'results' => []
+        ];
         
         $count = 0;
         foreach ($selected_users as $childid) {
             try {
                 \local_parentmanager\helper::create_link($parentid, $childid, $roleid);
                 $child = $DB->get_record('user', ['id' => $childid]);
-                echo "<li class='text-success'>" . get_string('success_link', 'local_parentmanager', fullname($child)) . "</li>";
+                $templatedata['results'][] = [
+                    'is_success' => true,
+                    'message' => get_string('success_link', 'local_parentmanager', fullname($child))
+                ];
                 $count++;
             } catch (Exception $e) {
-                echo "<li class='text-danger'>Erreur ID $childid : " . $e->getMessage() . "</li>";
+                $err_obj = new \stdClass();
+                $err_obj->id = $childid;
+                $err_obj->msg = $e->getMessage();
+                
+                $templatedata['results'][] = [
+                    'is_error' => true,
+                    'message' => get_string('error_id', 'local_parentmanager', $err_obj)
+                ];
             }
         }
-        echo "</ul>";
+        
+        echo $OUTPUT->render_from_template('local_parentmanager/action_results', $templatedata);
         echo $OUTPUT->box_end();
-        echo $OUTPUT->notification("$count utilisateurs ajoutés.", 'success');
+        
+        echo $OUTPUT->notification(get_string('users_added', 'local_parentmanager', $count), 'success');
         echo $OUTPUT->continue_button(new moodle_url('/local/parentmanager/cohort.php'));
         echo $OUTPUT->footer();
         exit;
@@ -74,7 +89,6 @@ if ($action === 'assign' && data_submitted() && confirm_sesskey()) {
     }
 }
 
-// 2. Form
 $mform = new \local_parentmanager\form\cohort_form();
 
 if ($mform->is_cancelled()) {
@@ -88,45 +102,32 @@ if ($mform->is_cancelled()) {
     echo $OUTPUT->heading(get_string('cohort_members', 'local_parentmanager', $cohort->name), 3);
     
     if (empty($members)) {
-        echo $OUTPUT->notification('Cette cohorte est vide.', 'warning');
+        echo $OUTPUT->notification(get_string('empty_cohort', 'local_parentmanager'), 'warning');
         echo $OUTPUT->continue_button($PAGE->url);
     } else {
-        echo "<p>" . get_string('assign_to_parent', 'local_parentmanager', fullname($parent)) . "</p>";
-        
-        echo '<form method="post" action="cohort.php">';
-        echo '<input type="hidden" name="sesskey" value="' . sesskey() . '">';
-        echo '<input type="hidden" name="action" value="assign">';
-        echo '<input type="hidden" name="parentid" value="' . $data->parentid . '">';
-        echo '<input type="hidden" name="roleid" value="' . $data->roleid . '">';
-
-        $table = new html_table();
-        $table->head = ['<input type="checkbox" id="selectall">', 'Nom', 'Email'];
+        $templatedata = [
+            'assign_to_parent_str' => get_string('assign_to_parent', 'local_parentmanager', fullname($parent)),
+            'sesskey' => sesskey(),
+            'parentid' => $data->parentid,
+            'roleid' => $data->roleid,
+            'assign_selected_str' => get_string('assign_selected', 'local_parentmanager'),
+            'cancel_str' => get_string('cancel'),
+            'members' => []
+        ];
         
         foreach ($members as $user) {
-            $table->data[] = [
-                '<input type="checkbox" name="selected_users[]" value="' . $user->id . '">',
-                fullname($user),
-                $user->email
+            $templatedata['members'][] = [
+                'id' => $user->id,
+                'fullname' => fullname($user),
+                'email' => $user->email
             ];
         }
-        echo html_writer::table($table);
-        
-        echo '<div class="mt-3">';
-        echo '<button type="submit" class="btn btn-primary">' . get_string('assign_selected', 'local_parentmanager') . '</button>';
-        echo ' <a href="cohort.php" class="btn btn-secondary">' . get_string('cancel') . '</a>';
-        echo '</div>';
-        echo '</form>';
-        
-        echo '<script>
-            document.getElementById("selectall").addEventListener("change", function() {
-                var checkboxes = document.querySelectorAll("input[name=\'selected_users[]\']");
-                for (var checkbox of checkboxes) { checkbox.checked = this.checked; }
-            });
-        </script>';
+        echo $OUTPUT->render_from_template('local_parentmanager/cohort_members_form', $templatedata);
     }
 
 } else {
     $mform->display();
 }
 
+echo $OUTPUT->footer();
 echo $OUTPUT->footer();
