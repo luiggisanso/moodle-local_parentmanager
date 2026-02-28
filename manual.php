@@ -46,18 +46,30 @@ if ($mform->is_cancelled()) {
     
     echo $OUTPUT->heading(get_string('processing', 'local_parentmanager'), 3);
     echo $OUTPUT->box_start();
-    echo "<p><strong>Parent :</strong> " . fullname($parent) . "</p><ul>";
+    
+    $templatedata = [
+        'title' => get_string('parent_label', 'local_parentmanager', fullname($parent)),
+        'results' => []
+    ];
 
     foreach ($data->childrenids as $childid) {
         try {
             \local_parentmanager\helper::create_link($parent->id, $childid, $data->roleid);
             $child = $DB->get_record('user', ['id' => $childid]);
-            echo "<li class='text-success'>" . get_string('success_link', 'local_parentmanager', fullname($child)) . "</li>";
+            $templatedata['results'][] = [
+                'is_success' => true,
+                'message' => get_string('success_link', 'local_parentmanager', fullname($child))
+            ];
         } catch (Exception $e) {
-            echo "<li class='text-danger'>Erreur : " . $e->getMessage() . "</li>";
+            $templatedata['results'][] = [
+                'is_error' => true,
+                'message' => get_string('error_generic', 'local_parentmanager', $e->getMessage())
+            ];
         }
     }
-    echo "</ul>";
+    
+    echo $OUTPUT->render_from_template('local_parentmanager/action_results', $templatedata);
+    
     echo $OUTPUT->continue_button(new moodle_url('/local/parentmanager/manual.php'));
     echo $OUTPUT->box_end();
 
