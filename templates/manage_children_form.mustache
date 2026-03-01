@@ -36,3 +36,8 @@ require(['jquery'], function($) {
     });
 });
 {{/js}}
+{{#js}}
+require(['local_parentmanager/selectall'], function(selectall) {
+    selectall.init("input[name='children[]']");
+});
+{{/js}}
