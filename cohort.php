@@ -54,17 +54,23 @@ if ($action === 'assign' && data_submitted() && confirm_sesskey()) {
             'title' => get_string('parent_label', 'local_parentmanager', fullname($parent)),
             'results' => []
         ];
+
+        list($in, $params) = $DB->get_in_or_equal($selected_users);
+        $children = $DB->get_records_select('user', "id $in AND deleted = 0", $params);
         
         $count = 0;
         foreach ($selected_users as $childid) {
             try {
                 \local_parentmanager\helper::create_link($parentid, $childid, $roleid);
-                $child = $DB->get_record('user', ['id' => $childid]);
-                $templatedata['results'][] = [
-                    'is_success' => true,
-                    'message' => get_string('success_link', 'local_parentmanager', fullname($child))
-                ];
-                $count++;
+                
+                if (isset($children[$childid])) {
+                    $child = $DB->get_record('user', ['id' => $childid]);
+                    $templatedata['results'][] = [
+                        'is_success' => true,
+                        'message' => get_string('success_link', 'local_parentmanager', fullname($child))
+                    ];
+                    $count++;
+                }
             } catch (Exception $e) {
                 $err_obj = new \stdClass();
                 $err_obj->id = $childid;
@@ -131,3 +137,4 @@ if ($mform->is_cancelled()) {
 
 echo $OUTPUT->footer();
 echo $OUTPUT->footer();
+
