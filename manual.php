@@ -52,14 +52,19 @@ if ($mform->is_cancelled()) {
         'results' => []
     ];
 
+    list($in, $params) = $DB->get_in_or_equal($data->childrenids);
+    $children = $DB->get_records_select('user', "id $in AND deleted = 0", $params);
+    
     foreach ($data->childrenids as $childid) {
         try {
             \local_parentmanager\helper::create_link($parent->id, $childid, $data->roleid);
-            $child = $DB->get_record('user', ['id' => $childid]);
-            $templatedata['results'][] = [
-                'is_success' => true,
-                'message' => get_string('success_link', 'local_parentmanager', fullname($child))
-            ];
+            if (isset($children[$childid])) {
+                $child = $DB->get_record('user', ['id' => $childid]);
+                $templatedata['results'][] = [
+                    'is_success' => true,
+                    'message' => get_string('success_link', 'local_parentmanager', fullname($child))
+                ];
+            }
         } catch (Exception $e) {
             $templatedata['results'][] = [
                 'is_error' => true,
@@ -78,3 +83,4 @@ if ($mform->is_cancelled()) {
 }
 
 echo $OUTPUT->footer();
+
