@@ -24,131 +24,62 @@
  * @copyright   2026 E-learning Touch' <contact@elearningtouch.com> (Maintainer)
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__ . '/../../config.php');
-require_once($CFG->libdir . '/adminlib.php');
-require_once(__DIR__ . '/classes/helper.php');
 
-admin_externalpage_setup('local_parentmanager_manage');
+$string['pluginname'] = 'Parent/Child Manager';
+$string['import_nav'] = 'CSV Import';
+$string['manual_nav'] = 'Manual Association';
+$string['cohort_nav'] = 'Cohort Association';
+$string['manage_nav'] = 'Manage Parents (List)';
 
-$roleid = optional_param('roleid', 0, PARAM_INT);
-$parentid = optional_param('parentid', 0, PARAM_INT);
-$action = optional_param('action', '', PARAM_ALPHA);
+$string['import_header'] = 'Bulk CSV Import';
+$string['manual_header'] = 'Individual Search';
+$string['manage_header'] = 'Manage Relationships';
 
-$baseurl = new moodle_url('/local/parentmanager/manage.php');
-$PAGE->set_url($baseurl);
-$PAGE->set_title(get_string('pluginname', 'local_parentmanager'));
-$PAGE->set_heading(get_string('manage_header', 'local_parentmanager'));
+$string['csv_file'] = 'CSV File';
+$string['role_select'] = 'Role to assign';
+$string['import_btn'] = 'Import';
+$string['assign_btn'] = 'Create links';
 
-echo $OUTPUT->header();
+$string['select_parent'] = 'Select a Parent';
+$string['select_children'] = 'Select Students';
+$string['select_cohort'] = 'Select a Cohort';
+$string['load_cohort_btn'] = 'Load member list';
 
-$allroles = role_get_names(null, ROLENAME_ORIGINAL);
-$sql = "SELECT r.id FROM {role} r JOIN {role_context_levels} rcl ON r.id = rcl.roleid WHERE rcl.contextlevel = :ctx";
-$valid_ids = $DB->get_fieldset_sql($sql, ['ctx' => CONTEXT_USER]);
+$string['report'] = 'Report';
+$string['processing'] = 'Processing';
+$string['success_link'] = 'Link created with {$a}';
+$string['cohort_members'] = 'Cohort members: {$a}';
+$string['assign_to_parent'] = 'Target parent: <strong>{$a}</strong>';
+$string['assign_selected'] = 'Assign selection';
+$string['no_selection'] = 'No item selected.';
 
-$roles = [];
-foreach ($allroles as $r) {
-    if (in_array($r->id, $valid_ids)) {
-        $roles[$r->id] = $r->localname;
-    }
-}
+$string['list_parents'] = 'List of Parents';
+$string['col_left'] = 'Parents';
+$string['col_right_manual'] = 'Number of children';
+$string['norole'] = 'No "User Context" role found. Please configure a Parent role in site administration.';
+$string['children_of'] = 'Children of: {$a}';
+$string['no_parents_found'] = 'No parent found.';
+$string['no_children'] = 'No child associated.';
+$string['manage_children'] = 'Manage';
+$string['delete_selected'] = 'Delete selection';
+$string['deleted_count'] = '{$a} link(s) deleted.';
+$string['back_to_list'] = 'Back to list';
 
-if (!$roleid && !empty($roles)) {
-    foreach ($roles as $rid => $rname) {
-        if (stripos($rname, 'parent') !== false) {
-            $roleid = $rid; 
-            break;
-        }
-    }
-    if (!$roleid) {
-        $roleid = array_key_first($roles);
-    }
-}
+$string['csv_instructions'] = '<div class="alert alert-info">CSV format: 2 columns (Parent Email ; Child Email).</div>';
+$string['privacy:metadata'] = 'Role management plugin.';
 
-if (!empty($roles)) {
-    echo $OUTPUT->single_select($baseurl, 'roleid', $roles, $roleid, null, 'switchrole');
-    echo "<hr>";
-} else {
-    echo $OUTPUT->notification(get_string('no_user_context_role', 'local_parentmanager'), 'error');
-    echo $OUTPUT->footer();
-    die();
-}
+$string['parentmanager:manage'] = 'Manage Parent/Child relationships';
 
-if ($action === 'delete' && $parentid && data_submitted() && confirm_sesskey()) {
-    $children_to_remove = optional_param_array('children', [], PARAM_INT);
-    if (!empty($children_to_remove)) {
-        foreach ($children_to_remove as $childid) {
-            \local_parentmanager\helper::delete_link($parentid, $childid, $roleid);
-        }
-        echo $OUTPUT->notification(get_string('deleted_count', 'local_parentmanager', count($children_to_remove)), 'success');
-    } else {
-        echo $OUTPUT->notification(get_string('no_selection', 'local_parentmanager'), 'warning');
-    }
-}
+$string['parent_label'] = 'Parent: {$a}';
+$string['error_id'] = 'Error ID {$a->id}: {$a->msg}';
+$string['error_generic'] = 'Error: {$a}';
+$string['users_added'] = '{$a} user(s) added.';
+$string['empty_cohort'] = 'This cohort is empty.';
+$string['no_user_context_role'] = 'No "User Context" role found. Please configure a Parent role in site administration.';
+$string['import_ok'] = 'OK: <strong>{$a->parent}</strong> -> <strong>{$a->child}</strong>';
+$string['import_err'] = 'Err: {$a->email} - {$a->msg}';
+$string['import_not_found'] = 'Not found: {$a->p_email} or {$a->c_email}';
+$string['action_label'] = 'Action';
 
-if ($parentid) {
-    $parent = $DB->get_record('user', ['id' => $parentid]);
-    $children = \local_parentmanager\helper::get_children_of_parent($parentid, $roleid);
-
-    echo $OUTPUT->heading(get_string('children_of', 'local_parentmanager', fullname($parent)), 3);
-    echo $OUTPUT->box_start();
-
-    if (empty($children)) {
-        echo "<p>" . get_string('no_children', 'local_parentmanager') . "</p>";
-    } else {
-        $templatedata = [
-            'sesskey' => sesskey(),
-            'roleid' => $roleid,
-            'parentid' => $parentid,
-            'delete_selected_str' => get_string('delete_selected', 'local_parentmanager'),
-            'back_to_list_str' => get_string('back_to_list', 'local_parentmanager'),
-            'children' => []
-        ];
-        
-        foreach ($children as $child) {
-            // CORRECTION : Déclaration de l'URL dans une variable propre
-            $profileurl = new moodle_url('/user/profile.php', ['id' => $child->id]);
-            
-            $templatedata['children'][] = [
-                'id' => $child->id,
-                'fullname' => fullname($child),
-                'email' => $child->email,
-                'profileurl' => $profileurl->out(false)
-            ];
-        }
-        
-        echo $OUTPUT->render_from_template('local_parentmanager/manage_children_form', $templatedata);
-    }
-    echo $OUTPUT->box_end();
-
-} else {
-    $parents = \local_parentmanager\helper::get_parents_list($roleid);
-    echo $OUTPUT->heading(get_string('list_parents', 'local_parentmanager'), 3);
-    
-    if (empty($parents)) {
-        echo $OUTPUT->notification(get_string('no_parents_found', 'local_parentmanager'), 'info');
-    } else {
-        $templatedata = [
-            'parent_name_str' => get_string('col_left', 'local_parentmanager'),
-            'children_str' => get_string('col_right_manual', 'local_parentmanager'),
-            'action_str' => get_string('action_label', 'local_parentmanager'),
-            'manage_str' => get_string('manage_children', 'local_parentmanager'),
-            'parents' => []
-        ];
-        
-        foreach ($parents as $p) {
-            $children = \local_parentmanager\helper::get_children_of_parent($p->id, $roleid);
-            // CORRECTION : Déclaration de l'URL dans une variable propre
-            $manage_url = new moodle_url('/local/parentmanager/manage.php', ['parentid' => $p->id, 'roleid' => $roleid]);
-            
-            $templatedata['parents'][] = [
-                'fullname' => fullname($p),
-                'email' => $p->email,
-                'count' => count($children),
-                'manageurl' => $manage_url->out(false)
-            ];
-        }
-        
-        echo $OUTPUT->render_from_template('local_parentmanager/manage_parents_list', $templatedata);
-    }
-}
-echo $OUTPUT->footer();
+$string['search_parent'] = 'Search for a parent...';
+$string['search_children'] = 'Search for students...';
