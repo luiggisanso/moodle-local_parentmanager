@@ -53,6 +53,8 @@ $string['assign_selected'] = 'Attribuer la sélection';
 $string['no_selection'] = 'Aucun élément sélectionné.';
 
 $string['list_parents'] = 'Liste des Parents';
+$string['col_left'] = 'Parents';
+$string['col_right_manual'] = 'Nombre d\'enfants';
 $string['norole'] = 'Aucun rôle de type "Contexte Utilisateur" n\'a été trouvé. Veuillez configurer un rôle Parent dans l\'administration du site.';
 $string['children_of'] = 'Enfants de : {$a}';
 $string['no_parents_found'] = 'Aucun parent trouvé.';
@@ -80,3 +82,4 @@ $string['action_label'] = 'Action';
 
 $string['search_parent'] = 'Rechercher un parent...';
 $string['search_children'] = 'Rechercher des élèves...';
+
