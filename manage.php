@@ -55,10 +55,13 @@ foreach ($allroles as $r) {
 if (!$roleid && !empty($roles)) {
     foreach ($roles as $rid => $rname) {
         if (stripos($rname, 'parent') !== false) {
-            $roleid = $rid; break;
+            $roleid = $rid; 
+            break;
         }
     }
-    if (!$roleid) $roleid = array_key_first($roles);
+    if (!$roleid) {
+        $roleid = array_key_first($roles);
+    }
 }
 
 if (!empty($roles)) {
@@ -102,11 +105,13 @@ if ($parentid) {
         ];
         
         foreach ($children as $child) {
+            $profileurl = new moodle_url('/user/profile.php', ['id' => $child->id]);
+            
             $templatedata['children'][] = [
                 'id' => $child->id,
                 'fullname' => fullname($child),
                 'email' => $child->email,
-                'profileurl' => new moodle_url('/user/profile.php', ['id' => $child->id])->out(false)
+                'profileurl' => $profileurl->out(false)
             ];
         }
         
@@ -132,6 +137,7 @@ if ($parentid) {
         foreach ($parents as $p) {
             $children = \local_parentmanager\helper::get_children_of_parent($p->id, $roleid);
             $manage_url = new moodle_url('/local/parentmanager/manage.php', ['parentid' => $p->id, 'roleid' => $roleid]);
+            
             $templatedata['parents'][] = [
                 'fullname' => fullname($p),
                 'email' => $p->email,
