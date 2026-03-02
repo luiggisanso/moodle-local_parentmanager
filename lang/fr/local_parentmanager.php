@@ -53,6 +53,8 @@ $string['assign_selected'] = 'Attribuer la sélection';
 $string['no_selection'] = 'Aucun élément sélectionné.';
 
 $string['list_parents'] = 'Liste des Parents';
+$string['col_left'] = 'Parents';
+$string['col_right_manual'] = 'Nombre d\'enfants';
 $string['norole'] = 'Aucun rôle de type "Contexte Utilisateur" n\'a été trouvé. Veuillez configurer un rôle Parent dans l\'administration du site.';
 $string['children_of'] = 'Enfants de : {$a}';
 $string['no_parents_found'] = 'Aucun parent trouvé.';
@@ -66,3 +68,17 @@ $string['csv_instructions'] = '<div class="alert alert-info">Format CSV : 2 colo
 $string['privacy:metadata'] = 'Plugin de gestion de rôles.';
 
 $string['parentmanager:manage'] = 'Gérer les relations Parents/Enfants';
+
+$string['parent_label'] = 'Parent : {$a}';
+$string['error_id'] = 'Erreur ID {$a->id} : {$a->msg}';
+$string['error_generic'] = 'Erreur : {$a}';
+$string['users_added'] = '{$a} utilisateur(s) ajouté(s).';
+$string['empty_cohort'] = 'Cette cohorte est vide.';
+$string['no_user_context_role'] = 'Aucun rôle de type "Contexte Utilisateur" n\'a été trouvé. Veuillez configurer un rôle Parent dans l\'administration du site.';
+$string['import_ok'] = 'OK : <strong>{$a->parent}</strong> -> <strong>{$a->child}</strong>';
+$string['import_err'] = 'Err : {$a->email} - {$a->msg}';
+$string['import_not_found'] = 'Introuvable : {$a->p_email} ou {$a->c_email}';
+$string['action_label'] = 'Action';
+
+$string['search_parent'] = 'Rechercher un parent...';
+$string['search_children'] = 'Rechercher des élèves...';
