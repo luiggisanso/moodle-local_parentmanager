@@ -64,7 +64,10 @@ class cohort_form extends \moodleform {
         }
 
         $mform->addElement('header', 'parent_hdr', '1. ' . get_string('select_parent', 'local_parentmanager'));
-        $mform->addElement('autocomplete', 'parentid', get_string('select_parent', 'local_parentmanager'), $allusers, ['multiple' => false, 'placeholder' => 'Rechercher un parent...']);
+        $mform->addElement('autocomplete', 'parentid', get_string('select_parent', 'local_parentmanager'), $allusers, [
+            'multiple' => false, 
+            'placeholder' => get_string('search_parent', 'local_parentmanager')
+        ]);
         $mform->addRule('parentid', null, 'required', null, 'client');
 
         $mform->addElement('header', 'cohort_hdr', '2. ' . get_string('select_cohort', 'local_parentmanager'));
