@@ -24,9 +24,10 @@
  * @copyright   2026 E-learning Touch' <contact@elearningtouch.com> (Maintainer)
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 $string['pluginname'] = 'Parent/Child Manager';
 $string['import_nav'] = 'CSV Import';
-$string['manual_nav'] = 'Individual Association';
+$string['manual_nav'] = 'Manual Association';
 $string['cohort_nav'] = 'Cohort Association';
 $string['manage_nav'] = 'Manage Parents (List)';
 
@@ -37,32 +38,48 @@ $string['manage_header'] = 'Manage Relationships';
 $string['csv_file'] = 'CSV File';
 $string['role_select'] = 'Role to assign';
 $string['import_btn'] = 'Import';
-$string['assign_btn'] = 'Create Links';
+$string['assign_btn'] = 'Create links';
 
-$string['select_parent'] = 'Select Parent';
+$string['select_parent'] = 'Select a Parent';
 $string['select_children'] = 'Select Students';
-$string['select_cohort'] = 'Select Cohort';
+$string['select_cohort'] = 'Select a Cohort';
 $string['load_cohort_btn'] = 'Load member list';
 
 $string['report'] = 'Report';
 $string['processing'] = 'Processing';
 $string['success_link'] = 'Link created with {$a}';
 $string['cohort_members'] = 'Cohort members: {$a}';
-$string['assign_to_parent'] = 'Target Parent: <strong>{$a}</strong>';
-$string['assign_selected'] = 'Assign selected';
-$string['no_selection'] = 'No selection.';
+$string['assign_to_parent'] = 'Target parent: <strong>{$a}</strong>';
+$string['assign_selected'] = 'Assign selection';
+$string['no_selection'] = 'No item selected.';
 
 $string['list_parents'] = 'List of Parents';
-$string['norole'] = 'No role of type ‘User context’ was found. Please configure a parent role in the site administration.';
+$string['col_left'] = 'Parents';
+$string['col_right_manual'] = 'Number of children';
+$string['norole'] = 'No "User Context" role found. Please configure a Parent role in site administration.';
 $string['children_of'] = 'Children of: {$a}';
-$string['no_parents_found'] = 'No parents found.';
-$string['no_children'] = 'No children associated.';
+$string['no_parents_found'] = 'No parent found.';
+$string['no_children'] = 'No child associated.';
 $string['manage_children'] = 'Manage';
-$string['delete_selected'] = 'Remove selected';
-$string['deleted_count'] = '{$a} link(s) removed.';
+$string['delete_selected'] = 'Delete selection';
+$string['deleted_count'] = '{$a} link(s) deleted.';
 $string['back_to_list'] = 'Back to list';
 
-$string['csv_instructions'] = '<div class="alert alert-info">CSV Format: 2 columns (Parent Email ; Child Email).</div>';
+$string['csv_instructions'] = '<div class="alert alert-info">CSV format: 2 columns (Parent Email ; Child Email).</div>';
 $string['privacy:metadata'] = 'Role management plugin.';
 
-$string['parentmanager:manage'] = 'Manage Parents/Childs Relationships';
+$string['parentmanager:manage'] = 'Manage Parent/Child relationships';
+
+$string['parent_label'] = 'Parent: {$a}';
+$string['error_id'] = 'Error ID {$a->id}: {$a->msg}';
+$string['error_generic'] = 'Error: {$a}';
+$string['users_added'] = '{$a} user(s) added.';
+$string['empty_cohort'] = 'This cohort is empty.';
+$string['no_user_context_role'] = 'No "User Context" role found. Please configure a Parent role in site administration.';
+$string['import_ok'] = 'OK: <strong>{$a->parent}</strong> -> <strong>{$a->child}</strong>';
+$string['import_err'] = 'Err: {$a->email} - {$a->msg}';
+$string['import_not_found'] = 'Not found: {$a->p_email} or {$a->c_email}';
+$string['action_label'] = 'Action';
+
+$string['search_parent'] = 'Search for a parent...';
+$string['search_children'] = 'Search for students...';
