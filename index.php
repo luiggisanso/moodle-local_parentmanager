@@ -45,7 +45,11 @@ if ($data = $mform->get_data()) {
     $roleid = $data->roleid;
 
     echo $OUTPUT->box_start();
-    echo "<h3>" . get_string('report', 'local_parentmanager') . "</h3><ul>";
+    
+    $templatedata = [
+        'title' => get_string('report', 'local_parentmanager'),
+        'results' => []
+    ];
 
     foreach ($lines as $i => $line) {
         $line = trim($line);
@@ -64,16 +68,39 @@ if ($data = $mform->get_data()) {
             if ($parent && $child) {
                 try {
                     \local_parentmanager\helper::create_link($parent->id, $child->id, $roleid);
-                    echo "<li class='text-success'>OK: <strong>".fullname($parent)."</strong> -> <strong>".fullname($child)."</strong></li>";
+                    
+                    $ok_obj = new \stdClass();
+                    $ok_obj->parent = fullname($parent);
+                    $ok_obj->child = fullname($child);
+                    
+                    $templatedata['results'][] = [
+                        'is_success' => true,
+                        'message' => get_string('import_ok', 'local_parentmanager', $ok_obj)
+                    ];
                 } catch (Exception $e) {
-                    echo "<li class='text-danger'>Err: {$parent->email} - " . $e->getMessage() . "</li>";
+                    $err_obj = new \stdClass();
+                    $err_obj->email = $parent->email;
+                    $err_obj->msg = $e->getMessage();
+                    
+                    $templatedata['results'][] = [
+                        'is_error' => true,
+                        'message' => get_string('import_err', 'local_parentmanager', $err_obj)
+                    ];
                 }
             } else {
-                echo "<li class='text-warning'>Introuvable: $p_email ou $c_email</li>";
+                $nf_obj = new \stdClass();
+                $nf_obj->p_email = $p_email;
+                $nf_obj->c_email = $c_email;
+                
+                $templatedata['results'][] = [
+                    'is_warning' => true,
+                    'message' => get_string('import_not_found', 'local_parentmanager', $nf_obj)
+                ];
             }
         }
     }
-    echo "</ul>";
+    
+    echo $OUTPUT->render_from_template('local_parentmanager/action_results', $templatedata);
     echo $OUTPUT->continue_button(new moodle_url('/local/parentmanager/index.php'));
     echo $OUTPUT->box_end();
 } else {
