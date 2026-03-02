@@ -2,7 +2,7 @@
 
 All notable changes to the `local_parentmanager` project will be documented in this file.
 
-## [1.0] - 2024-10-15
+## [1.0] - 2026-03-02
 
 ### Initial Release
 
@@ -15,3 +15,4 @@ All notable changes to the `local_parentmanager` project will be documented in t
 - **Cohort Association** page (`cohort.php`) dedicated to bulk assignment via cohorts.
 - Role assignment in User Context.
 - Basic Profile field population.
+
