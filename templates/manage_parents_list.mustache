@@ -1,0 +1,20 @@
+<table class="generaltable w-100">
+    <thead>
+        <tr>
+            <th scope="col">{{parent_name_str}}</th>
+            <th scope="col">{{#str}} email {{/str}}</th>
+            <th scope="col">{{children_str}}</th>
+            <th scope="col">{{action_str}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#parents}}
+        <tr>
+            <td><a href="{{manageurl}}">{{fullname}}</a></td>
+            <td>{{email}}</td>
+            <td><span class="badge badge-info badge-pill">{{count}}</span></td>
+            <td><a href="{{manageurl}}" class="btn btn-sm btn-primary">{{manage_str}}</a></td>
+        </tr>
+        {{/parents}}
+    </tbody>
+</table>
