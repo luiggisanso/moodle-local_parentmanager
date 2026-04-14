@@ -12,6 +12,7 @@
 2.  **Profile Update:** Updates custom profile fields (`parent_email` and `enfant_email`) with the full names of the associated users for easy reference.
 
 ### Features
+* **Role creation:** Parent role automatically created if doesn't yet exist - Special thanks to Mossaab Mohamed ali (https://github.com/mussaab)
 * **CSV Import:** Bulk association using a simple CSV file (Parent Email; Child Email).
 * **Manual Association:** Search for a specific parent and select one or multiple students to assign.
 * **Cohort Association:** Select a parent and assign an entire cohort of students in one click.
@@ -22,11 +23,7 @@
 ### Prerequisites
 Before using the plugin, you **must** configure Moodle:
 
-1.  **Create the Role:**
-    * Go to *Site administration > Users > Permissions > Define roles*.
-    * Create a role (e.g., "Parent").
-    * **Crucial:** Check **"User"** in the "Context types where this role may be assigned" setting.
-2.  **Create Profile Fields:**
+**Create Profile Fields:**
     * Go to *Site administration > Users > Accounts > User profile fields*.
     * Create two **Text area** fields.
     * Shortname 1: `parent_email`
@@ -55,6 +52,7 @@ Access the plugin via: **Site administration > Accounts > Parent/Child Manager**
 2.  **Mise à jour du profil :** Met à jour des champs de profil personnalisés (`parent_email` et `enfant_email`) avec les noms complets des utilisateurs associés pour une consultation facile.
 
 ### Fonctionnalités
+* **Création de rôle :** le rôle parent est créé automatiquement s'il n'existe pas encore - Remerciements particuliers à Mossaab Mohamed Ali (https://github.com/mussaab)
 * **Import CSV :** Association en masse via un fichier CSV simple (Email Parent ; Email Enfant).
 * **Association Manuelle :** Recherche d'un parent spécifique et sélection d'un ou plusieurs élèves.
 * **Association par Cohorte :** Sélection d'un parent et assignation de tous les membres d'une cohorte en un clic.
@@ -65,11 +63,7 @@ Access the plugin via: **Site administration > Accounts > Parent/Child Manager**
 ### Pré-requis
 Avant d'utiliser le plugin, vous **devez** configurer Moodle :
 
-1.  **Créer le Rôle :**
-    * Allez dans *Administration du site > Utilisateurs > Permissions > Définition des rôles*.
-    * Créez un rôle (ex: "Parent").
-    * **Crucial :** Cochez **"Utilisateur"** dans la section "Types de contextes où ce rôle peut être affecté".
-2.  **Créer les Champs de profil :**
+**Créer les Champs de profil :**
     * Allez dans *Administration du site > Utilisateurs > Comptes > Champs de profil utilisateur*.
     * Créez deux champs de type **Zone de texte**.
     * Nom court 1 : `parent_email`
