@@ -6,7 +6,7 @@ All notable changes to the `local_parentmanager` project will be documented in t
 
 ### Minor Updates
 
-- Parent role automatically created if doesn't yet exist 
+- Parent role automatically created if doesn't yet exist - Special thanks to Mossaab Mohamed ali (https://github.com/mussaab)
 
 ## [1.1] - 2026-03-09
 
