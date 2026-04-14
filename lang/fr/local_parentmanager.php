@@ -68,6 +68,8 @@ $string['csv_instructions'] = '<div class="alert alert-info">Format CSV : 2 colo
 $string['privacy:metadata'] = 'Plugin de gestion de rôles.';
 
 $string['parentmanager:manage'] = 'Gérer les relations Parents/Enfants';
+$string['parent_default_name'] = 'Parent';
+$string['parent_description_role'] = 'Rôle permettant aux parents de suivre la progression de leurs enfants.';
 $string['description_role'] = 'Rôle créé automatiquement par le plugin Parent Manager pour permettre le suivi des enfants.';
 
 $string['parent_label'] = 'Parent : {$a}';
