@@ -22,7 +22,7 @@
  * @package     local_parentmanager
  * @copyright   2026 Luiggi Sansonetti <1565841+luiggisanso@users.noreply.github.com> (Coder)
  * @copyright   2026 E-learning Touch' <contact@elearningtouch.com> (Maintainer)
- * @contributor 2026 https://github.com/mussaab
+ * @contributor 2026 Mossaab Mohamed ali <https://github.com/mussaab> (Idea anf install.php first version)
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
