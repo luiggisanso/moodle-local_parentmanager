@@ -27,10 +27,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_parentmanager';
-$plugin->version   = 2026030900; // Date YYYYMMDDxx
+$plugin->version   = 2026041400; // Date YYYYMMDDxx
 $plugin->requires  = 2022112800; // Moodle 4.1+
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0';
-$plugin->supported = [401, 501];
+$plugin->release   = '1.2';
+$plugin->supported = [401, 502];
 
 
