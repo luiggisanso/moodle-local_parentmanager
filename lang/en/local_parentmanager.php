@@ -69,6 +69,7 @@ $string['csv_instructions'] = '<div class="alert alert-info">CSV format: 2 colum
 $string['privacy:metadata'] = 'Role management plugin.';
 
 $string['parentmanager:manage'] = 'Manage Parent/Child relationships';
+$string['description_role'] = 'Role automatically created by the Parent Manager plugin to enable tracking of children.';
 
 $string['parent_label'] = 'Parent: {$a}';
 $string['error_id'] = 'Error ID {$a->id}: {$a->msg}';
